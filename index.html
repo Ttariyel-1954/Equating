@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Nəticələrinin Bərabərləşdirilməsi - Equating</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .lessons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .lesson {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .lesson:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .lesson-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .lesson:nth-child(odd) .lesson-number {
+            background: #e74c3c;
+        }
+
+        .lesson:nth-child(3n) .lesson-number {
+            background: #27ae60;
+        }
+
+        .lesson-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .lesson-desc {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .lesson-tags {
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #f8f9fa;
+            color: #6c757d;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+        }
+
+        .lesson-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .lesson-type {
+            background: #e8f4f8;
+            color: #3498db;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .lesson-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .lesson-link:hover {
+            color: #e74c3c;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .author {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+
+        .author h3 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .author p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .info-section p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .footer-links {
+            margin-top: 15px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            opacity: 0.8;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .lessons {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Test Nəticələrinin Bərabərləşdirilməsi</h1>
+            <p class="subtitle">Equating Methods and Applications</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">10</span>
+                    <span class="stat-label">Dərs</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5+</span>
+                    <span class="stat-label">Metod</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">R</span>
+                    <span class="stat-label">Proqram</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <h2 class="section-title">Dərs Materialları</h2>
+            
+            <div class="lessons">
+                <div class="lesson">
+                    <div class="lesson-number">1</div>
+                    <h3 class="lesson-title">Giriş: Test Equating Anlayışı</h3>
+                    <p class="lesson-desc">Test equating-in əsas anlayışları, tarixi və məqsədləri. Niyə equating lazımdır?</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Giriş</span>
+                        <span class="tag">Nəzəriyyə</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Nəzəri</span>
+                        <a href="Ders1.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">2</div>
+                    <h3 class="lesson-title">Equating Dizaynları</h3>
+                    <p class="lesson-desc">Müxtəlif equating dizaynları: Random Groups, Single Group, Counterbalanced</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Dizayn</span>
+                        <span class="tag">Metodologiya</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Nəzəri</span>
+                        <a href="Ders2.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">3</div>
+                    <h3 class="lesson-title">Linear Equating</h3>
+                    <p class="lesson-desc">Xətti equating metodları və onların tətbiqi. Mean və Linear equating</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Linear</span>
+                        <span class="tag">Statistika</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Praktik</span>
+                        <a href="Ders3.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">4</div>
+                    <h3 class="lesson-title">Equipercentile Equating</h3>
+                    <p class="lesson-desc">Equipercentile metodunun nəzəriyyəsi və tətbiqi. Düzgünləşdirmə texnikaları</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Percentile</span>
+                        <span class="tag">Nəzəriyyə</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Praktik</span>
+                        <a href="Ders4.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">5</div>
+                    <h3 class="lesson-title">R-də Equating Paketləri</h3>
+                    <p class="lesson-desc">R proqramında equate paketi ilə işləmə. Praktik nümunələr və kodlar</p>
+                    <div class="lesson-tags">
+                        <span class="tag">R</span>
+                        <span class="tag">Proqramlaşdırma</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">R Kodu</span>
+                        <a href="Ders5.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">6</div>
+                    <h3 class="lesson-title">Kernel Equating</h3>
+                    <p class="lesson-desc">Kernel equating metodunun əsasları və müasir yanaşmalar</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Kernel</span>
+                        <span class="tag">Müasir</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Mütəqədim</span>
+                        <a href="Ders6.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">7</div>
+                    <h3 class="lesson-title">IRT Equating</h3>
+                    <p class="lesson-desc">Item Response Theory əsaslı equating metodları və tətbiqlər</p>
+                    <div class="lesson-tags">
+                        <span class="tag">IRT</span>
+                        <span class="tag">Mütəqədim</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Mütəqədim</span>
+                        <a href="Ders7.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">8</div>
+                    <h3 class="lesson-title">Equating Keyfiyyətinin Qiymətləndirilməsi</h3>
+                    <p class="lesson-desc">Equating nəticələrinin keyfiyyətini necə qiymətləndirmək? SEE və digər göstəricilər</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Keyfiyyət</span>
+                        <span class="tag">Qiymətləndirmə</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Nəzəri</span>
+                        <a href="Ders8.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">9</div>
+                    <h3 class="lesson-title">Praktik Nümunələr və Case Study</h3>
+                    <p class="lesson-desc">Real məlumatlarla equating prosesi. Addım-addım praktik tətbiq</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Praktik</span>
+                        <span class="tag">Case Study</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Praktik</span>
+                        <a href="Ders9.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+
+                <div class="lesson">
+                    <div class="lesson-number">10</div>
+                    <h3 class="lesson-title">Equating-də Problem və Həllər</h3>
+                    <p class="lesson-desc">Equating prosesində rast gəlinən problemlər və onların həll yolları</p>
+                    <div class="lesson-tags">
+                        <span class="tag">Problemlər</span>
+                        <span class="tag">Həllər</span>
+                    </div>
+                    <div class="lesson-footer">
+                        <span class="lesson-type">Nəzəri</span>
+                        <a href="Ders10.html" class="lesson-link">Oxu →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="author">
+                <div class="author-avatar">TT</div>
+                <h3>Talıbov Tariyel</h3>
+                <p>Testologiya Mütəxəssisi</p>
+            </div>
+
+            <div class="info-section">
+                <h3>Kurs Haqqında</h3>
+                <p>Bu kurs test nəticələrinin bərabərləşdirilməsi metodlarını əhatə edir.</p>
+                <p><strong>Status:</strong> Aktiv</p>
+                <p><strong>Səviyyə:</strong> Orta-Mütəqədim</p>
+                <p><strong>Dil:</strong> Azərbaycan dili</p>
+            </div>
+
+            <div class="info-section">
+                <h3>Lazımı Alətlər</h3>
+                <p>• R Programming</p>
+                <p>• equate paketi</p>
+                <p>• Statistik bilik</p>
+                <p>• Test məlumatları</p>
+            </div>
+
+            <div class="info-section">
+                <h3>Əlaqəli Mövzular</h3>
+                <p>• Klassik Test Nəzəriyyəsi</p>
+                <p>• Item Response Theory</p>
+                <p>• Psixometriya</p>
+                <p>• Test İnkişafı</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>© 2024 Talıbov Tariyel - Test Nəticələrinin Bərabərləşdirilməsi Kursu</p>
+            <div class="footer-links">
+                <a href="../">Ana Səhifə</a>
+                <a href="mailto:talibov.tariyel@edu.az">Əlaqə</a>
+                <a href="../ktn-dersler/">Klassik Test Nəzəriyyəsi</a>
+                <a href="../CAT/">CAT Dərsləri</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
